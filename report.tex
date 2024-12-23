@@ -1,0 +1,70 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+\geometry{margin=1in}
+
+\title{Report on \\ \textbf{Online Learning for Min Sum Set Cover and Pandora's Box}}
+\author{
+    Kasionis Ioannis \\ University of Piraeus \\ \texttt{ioannis.kasionis@gmail.com}
+    \and
+    Triantafyllos Petros \\ University of Piraeus \\ \texttt{}
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report presents an analysis and summary of the paper \textit{Online Learning for Min Sum Set Cover and Pandora's Box}. The focus is on understanding the problems studied, the methodologies applied, and the key results, including their implications and potential applications.
+\end{abstract}
+
+\section{Introduction}
+Provide an overview of the problems of Min Sum Set Cover (MSSC) and Pandora's Box as introduced in the source paper. Discuss the motivation and background for studying these problems in stochastic and online optimization settings.
+
+\section{Problem Definitions}
+Define the MSSC and Pandora's Box problems. Include formal problem statements, such as:
+\begin{itemize}
+    \item \textbf{Pandora's Box Problem:} Present the goal of minimizing the sum of inspection costs and chosen values.
+    \item \textbf{Min Sum Set Cover Problem:} Discuss the special case where values are 0 or $\infty$.
+\end{itemize}
+
+\section{Methodologies}
+Summarize the key approaches used in the paper, including:
+\begin{itemize}
+    \item Convex relaxations for online learning.
+    \item Online convex optimization frameworks.
+    \item Rounding techniques for fractional to integral solutions.
+\end{itemize}
+
+\section{Results}
+Detail the main results:
+\begin{itemize}
+    \item Competitive ratios achieved for Pandora's Box and MSSC.
+    \item Extensions to bandit settings.
+    \item Performance under matroid constraints.
+\end{itemize}
+
+\section{Comparison with Previous Work}
+Discuss how the paper builds upon or improves results from prior studies. Highlight differences in techniques and results.
+
+\section{Applications and Future Work}
+Explain potential applications of these results in real-world scenarios. Propose future directions for research based on open questions identified in the paper.
+
+\section{Conclusion}
+Provide a concise summary of the main insights gained from the study and their significance in the field of online learning and optimization.
+
+\appendix
+\section{Appendix}
+Include any additional proofs, explanations, or extended results here.
+
+\begin{thebibliography}{9}
+\bibitem{mainpaper} E. Gergatsouli, C. Tzamos, \textit{Online Learning for Min Sum Set Cover and Pandora’s Box}, ICML 2022.
+\bibitem{reference1} Additional references as needed.
+\end{thebibliography}
+
+\end{document}
