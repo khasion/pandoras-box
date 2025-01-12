@@ -26,7 +26,13 @@ Furthermore, the research, extends this framework to a bandit setting where only
 \end{abstract}
 
 \section{Introduction}
-The two essential problems in \textit{Stochastic Optimization} are the \textit{Pandora's Box}, and \textit{MSSC} problems. Introduced, by Weitzman \cite{weitzman1978optimal} the \textit{Pandora's Box} problem offers a general framework for optimizing decisions under uncertainty, with a cost for revealing information. The goal is to minimize the cost of uncovering information. \textit{MSSC}, a variation of \textit{Pandora's box}, deals with scenarios where values are either $0$ or $\infty$ \cite{feige2004approximating}.
+The two essential problems in \textit{Stochastic Optimization} are the \textit{Pandora's Box}, and \textit{MSSC} problems.
+Introduced, by Weitzman \cite{weitzman1978optimal} the \textit{Pandora's Box} problem offers a general framework for optimizing decisions under uncertainty, with a cost for revealing information. 
+The goal is to minimize the cost of uncovering information.
+\textit{MSSC}, a variation of \textit{Pandora's box}, deals with scenarios where values are either $0$ or $\infty$ \cite{feige2004approximating}. \par
+While the traditional formulation of these problems assumes access to known stochastic distributions \cite{gergatsouli2022online}, our study extends these frameworks to \textit{online} settings, where data arrives sequentially without prior distributional knowledge. \par
+The \textbf{online learning} perspective brings forth several challenges and opportunities. In this model, adversarial instances or independent scenarios are presented iteratively, and the algorithm must decide on the next action based on the current state and previous observations. The performance metric typically revolves around \textit{regret}, measuring the algorithm's cumulative cost relative to an optimal offline policy \cite{shalev2012online}.
+
 
 \section{Problem Definitions}
 Define the MSSC and Pandora's Box problems. Include formal problem statements, such as:
