@@ -24,15 +24,26 @@
 This report presents an analysis and summary of the paper \textit{Online Learning for Min Sum Set Cover and Pandora's Box} which provides a simple but effective skeleton for crafting online leaning algorithms for the \textit{Pandora's Box Problem}, the \textit{Min Sum Set Cover Problem (MSSC)}, and other related problems in the field of \textit{Stochastic optimization} \cite{gergatsouli2022online}. Traditionally, these problems assume prior knowledge of value distributions. However, in this work, we explore an online learning approach where we are presented with information over multiple rounds. \par 
 Furthermore, the research, extends this framework to a bandit setting where only the values of the opened boxes are shown to the learner after each round.This extention also encompasses other alternatives of the above-mentioned problems \cite{gergatsouli2022online}.
 \end{abstract}
+\pagebreak
 
 \section{Introduction}
 The two essential problems in \textit{Stochastic Optimization} are the \textit{Pandora's Box}, and \textit{MSSC} problems.
-Introduced, by Weitzman \cite{weitzman1978optimal} the \textit{Pandora's Box} problem offers a general framework for optimizing decisions under uncertainty, with a cost for revealing information. 
-The goal is to minimize the cost of uncovering information.
+Introduced, by Weitzman \cite{weitzman1978optimal} the \textit{Pandora's Box} problem offers a general framework for optimizing decisions under uncertainty, thus the goal is to minimize the cost of uncovering information.
 \textit{MSSC}, a variation of \textit{Pandora's box}, deals with scenarios where values are either $0$ or $\infty$ \cite{feige2004approximating}. \par
-While the traditional formulation of these problems assumes access to known stochastic distributions \cite{gergatsouli2022online}, our study extends these frameworks to \textit{online} settings, where data arrives sequentially without prior distributional knowledge. \par
-The \textbf{online learning} perspective brings forth several challenges and opportunities. In this model, adversarial instances or independent scenarios are presented iteratively, and the algorithm must decide on the next action based on the current state and previous observations. The performance metric typically revolves around \textit{regret}, measuring the algorithm's cumulative cost relative to an optimal offline policy \cite{shalev2012online}.
+While the traditional formulation of these problems assumes access to known stochastic distributions \cite{gergatsouli2022online}, this study extends these frameworks to \textit{online} settings, where data arrives sequentially without prior distributional knowledge. \par
+The \textit{online learning} perspective brings forth several challenges and opportunities. In this model, adversarial instances or independent scenarios are presented iteratively, and the algorithm must decide on the next action based on the current state and previous observations. The performance metric typically revolves around \textit{regret}, measuring the algorithm's cumulative cost relative to an optimal offline policy \cite{shalev2012online}.
+\newline
 
+The works primary contributions are as follows:
+\begin{enumerate}
+    \item Propose a computationally efficient online algorithm that achieves constant-competitive guarantees for both MSSC and generalizations of Pandora's Box in full-information settings. This includes problems with complex constraints such as matroid bases \cite{bansal2010constant}.
+    \item Extend the analysis to \textit{bandit settings}, where only partial feedback about the explored options is available \cite{flaxman2004online}. Despite these limited observations, our algorithm maintains a logarithmic regret bound, providing robust performance guarantees.
+    \item Leveraging convex relaxations and online convex optimization techniques, demonstrate practical approximation strategies that bridge theoretical insights with computational efficiency \cite{shalev2007primal}.
+\end{enumerate}
+
+The implications of these results are twofold. First, they broaden the applicability of MSSC and Pandora's Box to dynamic, real-world contexts where decisions must adapt to unfolding events. Second, the integration of online convex optimization frameworks highlights the role of mathematical tools in addressing combinatorial challenges \cite{gergatsouli2022online}.
+
+The remainder of the paper is organized as follows. Section 2 presents the problem formulations and related work, Section 3 details the proposed methods, and Sections 4 and 5 provide theoretical analyses and experimental evaluations, respectively. It concludes with discussions on potential future extensions.
 
 \section{Problem Definitions}
 Define the MSSC and Pandora's Box problems. Include formal problem statements, such as:
