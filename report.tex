@@ -34,9 +34,9 @@ While the traditional formulation of these problems assumes access to known stoc
 The \textit{online learning} perspective brings forth several challenges and opportunities. In this model, adversarial instances or independent scenarios are presented iteratively, and the algorithm must decide on the next action based on the current state and previous observations. The performance metric typically revolves around \textit{regret}, measuring the algorithm's cumulative cost relative to an optimal offline policy \cite{shalev2012online}.
 \newline
 
-The works primary contributions are as follows:
+The work's primary contributions are as follows:
 \begin{enumerate}
-    \item Propose a computationally efficient online algorithm that achieves constant-competitive guarantees for both MSSC and generalizations of Pandora's Box in full-information settings. This includes problems with complex constraints such as matroid bases \cite{bansal2010constant}.
+    \item Propose a computationally efficient online algorithm that achieves constant-competitive guarantees for both MSSC and Pandora's Box generalizations in full-information settings. This includes problems with complex constraints such as matroid bases \cite{bansal2010constant}.
     \item Extend the analysis to \textit{bandit settings}, where only partial feedback about the explored options is available \cite{flaxman2004online}. Despite these limited observations, our algorithm maintains a logarithmic regret bound, providing robust performance guarantees.
     \item Leveraging convex relaxations and online convex optimization techniques, demonstrate practical approximation strategies that bridge theoretical insights with computational efficiency \cite{shalev2007primal}.
 \end{enumerate}
@@ -44,13 +44,54 @@ The works primary contributions are as follows:
 The implications of these results are twofold. First, they broaden the applicability of MSSC and Pandora's Box to dynamic, real-world contexts where decisions must adapt to unfolding events. Second, the integration of online convex optimization frameworks highlights the role of mathematical tools in addressing combinatorial challenges \cite{gergatsouli2022online}.
 
 The remainder of the paper is organized as follows. Section 2 presents the problem formulations and related work, Section 3 details the proposed methods, and Sections 4 and 5 provide theoretical analyses and experimental evaluations, respectively. It concludes with discussions on potential future extensions.
+\pagebreak
 
 \section{Problem Definitions}
-Define the MSSC and Pandora's Box problems. Include formal problem statements, such as:
+This section formalizes the two central problems studied: Min Sum Set Cover (MSSC) and Pandora’s Box. We provide their definitions and highlight their significance in stochastic optimization and online learning.
+
+\subsection{Pandora’s Box Problem}
+The Pandora’s Box problem, introduced by Weitzman, involves \( n \) boxes, each containing an unknown value. Opening a box incurs a cost, and the goal is to minimize the sum of the inspection costs and the value of the chosen box. Formally:
 \begin{itemize}
-    \item \textbf{Pandora's Box Problem:} Present the goal of minimizing the sum of inspection costs and chosen values.
-    \item \textbf{Min Sum Set Cover Problem:} Discuss the special case where values are 0 or $\infty$.
+    \item Let \( B = \{1, 2, \dots, n\} \) be the set of boxes.
+    \item Each box \( i \in B \) has a value \( v_i \) drawn from an unknown distribution.
+    \item Opening a box incurs a cost \( c_i \), and the decision-maker observes \( v_i \) only after opening the box.
+    \item The objective is to determine an optimal sequence of box openings and a stopping rule to minimize the total cost:
+    \[
+    \text{Total Cost} = \sum_{i \in S} c_i + \min_{i \in S} v_i,
+    \]
+    where \( S \) is the subset of opened boxes.
 \end{itemize}
+
+This problem is extended to scenarios with additional constraints:
+\begin{itemize}
+    \item \textbf{Selection of \( k \) Boxes:} Find \( k \) boxes to minimize the sum of their values and inspection costs.
+    \item \textbf{Matroid Constraints:} Select a subset of boxes forming a matroid basis to optimize the objective.
+\end{itemize}
+
+\subsection{Min Sum Set Cover (MSSC) Problem}
+The MSSC problem is a combinatorial optimization task that seeks to minimize the total time at which elements are first covered by a sequence of sets. It is closely related to set cover problems and is defined as follows:
+\begin{itemize}
+    \item Let \( U = \{e_1, e_2, \dots, e_m\} \) be a set of elements and \( \mathcal{S} = \{S_1, S_2, \dots, S_n\} \) be a collection of subsets of \( U \) such that \( \bigcup_{i=1}^n S_i = U \).
+    \item Each subset \( S_i \) can be chosen at a time \( t \), and the covering time of an element \( e \in U \) is the first time \( t \) when \( e \) belongs to a chosen subset.
+    \item The objective is to find a sequence of subsets \( S_{i_1}, S_{i_2}, \dots, S_{i_k} \) that minimizes the sum of the covering times of all elements:
+    \[
+    \text{Total Cost} = \sum_{e \in U} \text{Covering Time}(e).
+    \]
+\end{itemize}
+
+A special case of MSSC arises when the values in Pandora’s Box are restricted to \( \{0, \infty\} \), representing whether a scenario is covered or not. This case simplifies to deciding an ordering of subsets that minimizes the sum of first cover times.
+
+\subsection{Online Variants}
+In the online setting, the value vectors or scenarios are presented adversarially over \( T \) rounds:
+\begin{itemize}
+    \item \textbf{Input:} At each round \( t \), the learner observes an instance of the problem defined by the adversary.
+    \item \textbf{Goal:} Develop strategies that minimize regret, defined as the difference in performance between the learner and the optimal offline solution over all rounds:
+    \[
+    \text{Regret}(A, T) = \frac{1}{T} \sum_{t=1}^T \big(A(t) - \text{OPT}(t)\big).
+    \]
+\end{itemize}
+
+By leveraging convex relaxations and online optimization techniques, these problems are extended to realistic feedback models like bandit settings, where only partial information about the outcomes is revealed after each decision.
 
 \section{Methodologies}
 Summarize the key approaches used in the paper, including:
