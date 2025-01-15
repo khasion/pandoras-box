@@ -47,51 +47,15 @@ The remainder of the paper is organized as follows. Section 2 presents the probl
 \pagebreak
 
 \section{Problem Definitions}
-This section formalizes the two central problems studied: Min Sum Set Cover (MSSC) and Pandora’s Box. We provide their definitions and highlight their significance in stochastic optimization and online learning.
-
 \subsection{Pandora’s Box Problem}
-The Pandora’s Box problem, introduced by Weitzman, involves \( n \) boxes, each containing an unknown value. Opening a box incurs a cost, and the goal is to minimize the sum of the inspection costs and the value of the chosen box. Formally:
-\begin{itemize}
-    \item Let \( B = \{1, 2, \dots, n\} \) be the set of boxes.
-    \item Each box \( i \in B \) has a value \( v_i \) drawn from an unknown distribution.
-    \item Opening a box incurs a cost \( c_i \), and the decision-maker observes \( v_i \) only after opening the box.
-    \item The objective is to determine an optimal sequence of box openings and a stopping rule to minimize the total cost:
-    \[
-    \text{Total Cost} = \sum_{i \in S} c_i + \min_{i \in S} v_i,
-    \]
-    where \( S \) is the subset of opened boxes.
-\end{itemize}
+The Pandora’s Box problem involves a set of \( n \) boxes, each containing an unknown value and an associated cost to open. The objective is to determine an order in which to open the boxes to minimize the combined cost of inspection and the value of the selected item. Specifically, given a distribution of potential values and costs for each box, the goal is to identify an optimal strategy that balances exploration (opening boxes) and exploitation (choosing the best available value). 
 
-This problem is extended to scenarios with additional constraints:
-\begin{itemize}
-    \item \textbf{Selection of \( k \) Boxes:} Find \( k \) boxes to minimize the sum of their values and inspection costs.
-    \item \textbf{Matroid Constraints:} Select a subset of boxes forming a matroid basis to optimize the objective.
-\end{itemize}
+In the online variant considered in this work, values and costs for the boxes are revealed adversarially over \( T \) rounds, requiring the learner to adopt strategies that adapt to newly presented information while minimizing regret against an optimal offline policy.
 
-\subsection{Min Sum Set Cover (MSSC) Problem}
-The MSSC problem is a combinatorial optimization task that seeks to minimize the total time at which elements are first covered by a sequence of sets. It is closely related to set cover problems and is defined as follows:
-\begin{itemize}
-    \item Let \( U = \{e_1, e_2, \dots, e_m\} \) be a set of elements and \( \mathcal{S} = \{S_1, S_2, \dots, S_n\} \) be a collection of subsets of \( U \) such that \( \bigcup_{i=1}^n S_i = U \).
-    \item Each subset \( S_i \) can be chosen at a time \( t \), and the covering time of an element \( e \in U \) is the first time \( t \) when \( e \) belongs to a chosen subset.
-    \item The objective is to find a sequence of subsets \( S_{i_1}, S_{i_2}, \dots, S_{i_k} \) that minimizes the sum of the covering times of all elements:
-    \[
-    \text{Total Cost} = \sum_{e \in U} \text{Covering Time}(e).
-    \]
-\end{itemize}
+\subsection{Min Sum Set Cover (MSSC)}
+The MSSC problem is a special case of Pandora’s Box where the values (or costs) inside the boxes are restricted to either \( 0 \) or \( \infty \). The MSSC is particularly relevant in applications where binary outcomes dictate whether an item satisfies certain criteria.
+\pagebreak
 
-A special case of MSSC arises when the values in Pandora’s Box are restricted to \( \{0, \infty\} \), representing whether a scenario is covered or not. This case simplifies to deciding an ordering of subsets that minimizes the sum of first cover times.
-
-\subsection{Online Variants}
-In the online setting, the value vectors or scenarios are presented adversarially over \( T \) rounds:
-\begin{itemize}
-    \item \textbf{Input:} At each round \( t \), the learner observes an instance of the problem defined by the adversary.
-    \item \textbf{Goal:} Develop strategies that minimize regret, defined as the difference in performance between the learner and the optimal offline solution over all rounds:
-    \[
-    \text{Regret}(A, T) = \frac{1}{T} \sum_{t=1}^T \big(A(t) - \text{OPT}(t)\big).
-    \]
-\end{itemize}
-
-By leveraging convex relaxations and online optimization techniques, these problems are extended to realistic feedback models like bandit settings, where only partial information about the outcomes is revealed after each decision.
 
 \section{Methodologies}
 Summarize the key approaches used in the paper, including:
@@ -110,13 +74,23 @@ Detail the main results:
 \end{itemize}
 
 \section{Comparison with Previous Work}
-Discuss how the paper builds upon or improves results from prior studies. Highlight differences in techniques and results.
+This work builds upon the foundational results in stochastic optimization, particularly in the domains of Pandora’s Box and MSSC. Previous studies have focused on the stochastic case, where values and costs are drawn from known distributions, enabling efficient offline algorithms and partially adaptive strategies \cite{weitzman1978optimal, chawla2020pandora}.
+
+In contrast, our study addresses the online setting where adversarially chosen values and costs are presented over multiple rounds. Notably, our framework simplifies the implementation of competitive algorithms through convex relaxations and online convex optimization techniques, extending prior work by providing guarantees in bandit settings \cite{gergatsouli2022online}. Furthermore, our results generalize MSSC algorithms, achieving constant-factor approximations even under matroid constraints, a challenge that previous work struggled to address effectively \cite{feige2004approximating}.
 
 \section{Applications and Future Work}
-Explain potential applications of these results in real-world scenarios. Propose future directions for research based on open questions identified in the paper.
+The results of this study have practical implications in various domains, including:
+\begin{itemize}
+    \item \textbf{Resource Allocation:} Optimizing inspection costs in applications such as manufacturing and quality assurance.
+    \item \textbf{Search Algorithms:} Enhancing strategies for finding optimal solutions under uncertain information.
+    \item \textbf{Online Auctions:} Adapting bidding strategies in adversarial settings.
+\end{itemize}
+
+Future work could explore extending the framework to dynamic settings where constraints evolve over time or incorporating richer feedback mechanisms in the bandit setting. Additionally, improving the approximation factors under more complex combinatorial constraints remains an open challenge with significant theoretical and practical relevance.
+\pagebreak
 
 \section{Conclusion}
-Provide a concise summary of the main insights gained from the study and their significance in the field of online learning and optimization.
+This work presented a comprehensive framework for addressing the online versions of Pandora’s Box and Min Sum Set Cover (MSSC), two cornerstone problems in stochastic optimization. By leveraging convex relaxations and online convex optimization techniques, the authors developed efficient algorithms that achieve constant competitiveness under full information and bandit settings. These algorithms extend the capabilities of previous approaches, particularly in handling adversarially chosen inputs and accommodating complex constraints such as matroids \cite{gergatsouli2022online}.
 
 \appendix
 \section{Appendix}
