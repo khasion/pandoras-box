@@ -57,21 +57,51 @@ The MSSC problem is a special case of Pandora’s Box where the values (or costs
 \pagebreak
 
 
-\section{Methodologies}
-Summarize the key approaches used in the paper, including:
-\begin{itemize}
-    \item Convex relaxations for online learning.
-    \item Online convex optimization frameworks.
-    \item Rounding techniques for fractional to integral solutions.
-\end{itemize}
+\section{Methodologies and Results}
+The authors developed a three-step framework inspired by the scenario-aware relaxations in \cite{CGT+20}, but adapted to an \emph{online} setting. This framework is applied to two benchmarks---\emph{non-adaptive (NA)} and \emph{partially adaptive (PA)}---under both full-information and bandit feedback.
 
-\section{Results}
-Detail the main results:
-\begin{itemize}
-    \item Competitive ratios achieved for Pandora's Box and MSSC.
-    \item Extensions to bandit settings.
-    \item Performance under matroid constraints.
-\end{itemize}
+\subsection*{Scenario-Aware Relaxation and Rounding}
+First, they formulate each round’s problem (selecting one box, $k$ boxes, or a matroid basis) as a \emph{scenario-aware} convex program whose fractional solution captures the idea of ``opening'' or ``selecting'' boxes. Building on \cite{CGT+20}, this relaxation is crafted so that a single rounding algorithm can be applied \emph{irrespective of the scenario} revealed. In particular, an $\alpha$-approximate rounding ensures that converting fractional solutions to integral ones (i.e., actual permutations or subsets of boxes) inflates cost by at most a constant factor $\alpha$. This idea eliminates the need to re-optimize for each scenario and is key to preserving no-regret guarantees.
+
+\subsection*{Online Convex Optimization for Full Information vs.\ PA}
+When facing a \emph{partially adaptive} benchmark in a \emph{full-information} setting, the authors adopt \emph{Follow the Regularized Leader (FTRL)}. At each round, since the cost function for the entire convex relaxation is observed, they update their fractional decision by minimizing the sum of past losses plus a strongly convex regularizer. Replacing the gradient-descent approach of earlier works with FTRL allows tighter regret bounds. Crucially, once a fractional solution is chosen, it is rounded using the scenario-independent $\alpha$-approximation procedure. In the special case of MSSC, this method recovers the \emph{tight 4-approximation} known offline, showing that their approach effectively matches best-known guarantees while handling adversarial input sequences.
+
+Moreover, against a partially adaptive benchmark, these methods yield \emph{$\alpha$-approximate no-regret} for Pandora’s Box–type objectives under diverse constraints. The paper reports:
+\[
+\begin{cases}
+\text{9.22-approx.\ no-regret for choosing 1 box},\\
+O(1)\text{-approx.\ no-regret for choosing $k$ boxes},\\
+O(\log k)\text{-approx.\ no-regret for choosing a matroid basis}.
+\end{cases}
+\]
+These results hold in the full-information model, demonstrating constant or logarithmic blow-ups relative to an optimal partially adaptive strategy in hindsight.
+
+\subsection*{Bandit vs.\ PA via Mixing FTRL and ``Open-All''}
+Under \emph{bandit feedback}, the learner typically only sees $f^{(t)}(x_t)$ at the chosen point $x_t$, and thus must estimate losses without observing the full function each round. To compensate for missing information, the authors' algorithm randomly alternates between:
+\begin{enumerate}
+  \item \emph{Opening all $n$ boxes} (paying an upfront cost) to learn the entire cost function for that round.
+  \item \emph{Applying an OCO step} (similar to FTRL) using only partial information from the boxes actually opened in the other rounds.
+\end{enumerate}
+This mixed strategy balances exploration and exploitation and preserves the same rounding-based \(\alpha\)-approximation factor, ensuring \emph{sublinear} regret compared to a PA benchmark. Intuitively, if we never open all boxes, we risk poor gradient estimates; if we always open them, we overspend on inspection. Balancing these extremes provides robust performance with constant or $O(\log k)$ approximate ratios mirroring the full-information case. Specifically the same as in the previous full information case.
+
+\subsection*{Bandit vs.\ NA and the Role of Non-Lipschitz Costs}
+A \emph{non-adaptive} benchmark fixes one subset of boxes throughout all rounds. The cost function here is often \emph{non-Lipschitz}, preventing direct application of FTRL. Instead, the paper introduces an \emph{explore--exploit} procedure in which:
+\begin{enumerate}
+\item \textbf{Explore:} The algorithm fully opens boxes in certain rounds, discovering a new constraint (e.g., a threshold or cost range).  It adds this to a global linear program and uses an ellipsoid subroutine to find a feasible fractional solution.
+\item \textbf{Exploit:} That fractional solution is then rounded into a non-adaptive set of boxes, used until the next exploration.
+\end{enumerate}
+\textbf{Theorem~5.3} states that if there exists a partially adaptive algorithm that is $\beta$-competitive against the NA optimal policy for a given problem (single box, $k$ boxes, or matroid), then the authors’ bandit algorithm matches that $\beta$ up to a small constant factor plus an $o(T)$ regret term. By leveraging previously established constants for these problems, they obtain approximate no-regret bounds of:
+\[
+\begin{cases}
+3.16\text{-approx.\ no regret for choosing 1 box,}\\
+12.64\text{-approx.\ no regret for choosing $k$ boxes,}\\
+O(\log k)\text{-approx.\ no regret for choosing a matroid basis.}
+\end{cases}
+\]
+Hence, even in the more restrictive NA setting and under partial feedback, the approach still achieves near-optimal competitive guarantees.
+
+\subsection*{Conclusions}
+Altogether, this methodology---scenario-aware convex relaxations, online convex optimization to handle partial or full feedback, and scenario-independent rounding---provides unified \emph{constant-competitive no-regret} algorithms, even under adversarial instantiations of Pandora’s Box and MSSC. While the core scenario-aware approach is similar across PA and NA benchmarks, the \emph{constant factors} differ to reflect the more restrictive nature easier to compete against ofnon-adaptive policies. Ultimately, their results show that even in adversarial (bandit) contexts, one can achieve performance close to known offline approximations, including the optimal 4-approximation for MSSC, thus reinforcing the power of integrating convex relaxations, online learning, and robust rounding techniques.
 
 \section{Comparison with Previous Work}
 This work builds upon the foundational results in stochastic optimization, particularly in the domains of Pandora’s Box and MSSC. Previous studies have focused on the stochastic case, where values and costs are drawn from known distributions, enabling efficient offline algorithms and partially adaptive strategies \cite{weitzman1978optimal, chawla2020pandora}.
