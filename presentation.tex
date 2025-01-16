@@ -39,26 +39,134 @@
 \end{itemize}
 \end{frame}
 
-% Slide 3: Methodology
 \begin{frame}{Methodology}
-\textbf{Framework: Online Convex Optimization (OCO)} \cite{shalev2007primal}\\
-Steps:
-\begin{enumerate}
-    \item Convex relaxation of problem instances \cite{flaxman2004online}.
-    \item Fractional solutions obtained via OCO.
-    \item Rounding fractional solutions to integral solutions \cite{bansal2010constant}.
-\end{enumerate}
-\end{frame}
 
-% Slide 4: Key Results
-\begin{frame}{Key Results}
-\begin{itemize}
-    \item \textbf{Single Box:} 9.22-approximation no-regret algorithm \cite{gergatsouli2022online}.
-    \item \textbf{Multiple Boxes:} $O(1)$-approximation no-regret algorithm \cite{gergatsouli2022online}.
-    \item \textbf{Matroid Constraints:} $O(\log k)$-approximation no-regret algorithm \cite{gergatsouli2022online}.
-    \item \textbf{Efficiency:} Computationally efficient Algorithms.
-\end{itemize}
-\end{frame}
+    \textbf{Methodology Outline:}
+    \begin{enumerate}
+        \item Scenario-aware convex relaxation.
+        \item Online Convex Optimization (e.g.\ FTRL, explore--exploit).
+        \item $\alpha$-approx.\ rounding, scenario-independent.
+    \end{enumerate}
+    
+    \textbf{Goal:} Achieve \emph{no-regret} (or $\alpha$-approx.\ no-regret) against adversarial inputs, matching near-optimal offline constants.
+    \end{frame}
+    
+    % Slide 2: Algorithm as (sigma, tau)
+    \begin{frame}{Describing Policies via $(\sigma, \tau)$}
+    \textbf{Any algorithm can be described} by:
+    \[
+      (\sigma, \tau),
+    \]
+    where
+    \begin{itemize}
+      \item $\sigma$ is a permutation of the boxes, representing the \emph{order} in which they are opened.
+      \item $\tau$ is a \emph{stopping rule}, deciding when to stop opening further boxes and select the best seen.
+    \end{itemize}
+    
+    \end{frame}
+    
+    % Slide 3: Main Contribution from [CGT+20]
+    \begin{frame}{Key Result from \cite{CGT+20}}
+    \textbf{Simplicity via Ordering:}\\
+    One major insight in \cite{CGT+20} is that \emph{it suffices to design a strategy} that:
+    \begin{itemize}
+        \item Chooses \emph{an ordering} of boxes to open,
+        \item Performs well under the assumption we know \emph{when to stop}.
+    \end{itemize}
+    
+    \vspace{0.5em}
+    \textbf{Why is this powerful?}
+    \begin{itemize}
+        \item We do not need to handle all possible dynamic reorderings.
+        \item Scenario-awareness plus a single (or fixed) ordering handles partial adaptivity with small overhead.
+    \end{itemize}
+    
+    \textbf{Thus:} The combinatorial explosion of fully adaptive policies is avoided. We focus on \emph{permutation} + \emph{stopping} rather than re-choosing order after each cost revelation.
+    \end{frame}
+    
+    
+    % Slide 5: Why SPA and How Rounding Escapes Scenario Dependency
+    \begin{frame}{Scenario-Aware Partially Adaptive (SPA)}
+    \textbf{SPA:} We fix an ordering for boxes and a possible stopping point, but \emph{adapt} which boxes to open in each round \emph{based on} partial observations.
+    
+    \textbf{Rationale:}
+    \begin{itemize}
+        \item Fully adaptive strategies are intractably large.
+        \item \emph{Scenario-aware} partial adaptivity is near-optimal (loses only a constant factor).
+    \end{itemize}
+    
+    \textbf{Rounding to Escape Scenario Dependence:}
+    \begin{itemize}
+        \item Solve a fractional relaxation that depends on scenario $s$.
+        \item \emph{One rounding procedure} transforms that fractional $x$ into an integral plan \emph{without} re-optimizing for $s$.
+        \item Ensures a constant-factor overhead $\alpha$ and preserves no-regret in an adversarial setting.
+    \end{itemize}
+    \end{frame}
+    
+    \begin{frame}
+    \vspace{0.5em}
+    \textbf{Lemma 2.1 (Simplification of Theorem 3.4 from \cite{CGT+20}):}\\
+    For any polynomial-time $\alpha$-approx.\ algorithm for \emph{scenario-aware partially adaptive} strategies, there is a polynomial-time algorithm that is 
+    \[
+     \frac{e}{e-1}\,\alpha\text{-approx.}
+    \]
+    as a partially adaptive strategy. 
+    
+    \textbf{Interpretation:} Reduces fully adaptive policies to carefully chosen permutations $+$ a robust stopping rule, paying only a constant factor $\frac{e}{e-1}\approx 1.58$ overhead.
+    \end{frame}
+    
+    % Slide 6: Methodologies (OCO + Explore-Exploit)
+    \begin{frame}{Online Methodologies: OCO + Explore--Exploit}
+    \textbf{Full-Information vs.\ PA:}
+    \begin{itemize}
+      \item Observe entire cost function each round, apply FTRL (Follow-the-Regularized-Leader).
+      \item Round solutions scenario-independently.
+      \item Achieves $\alpha$-approx.\ no-regret \emph{e.g.\ 9.22 for 1 box, $O(1)$ for $k$ boxes.}
+    \end{itemize}
+    
+    \textbf{Bandit vs.\ PA:}
+    \begin{itemize}
+      \item Partial feedback: only see the cost at your chosen fractional point.
+      \item Occasionally \emph{open all boxes}, paying cost $n$, to obtain full function info (exploration).
+      \item Combine partial info + full info to keep regret sublinear, maintaining the same $\alpha$-approx.\ factor.
+    \end{itemize}
+    \end{frame}
+    
+    % Slide 7: PA Has the Same No-Regret Guarantees
+    \begin{frame}{Partially Adaptive No-Regret Guarantees}
+    \textbf{Why the same approximation factors remain?}
+    \begin{itemize}
+        \item Rounding is independent of scenario once the fractional solution is found.
+        \item For full-info, FTRL yields sublinear regret in the fractional domain.
+        \item For bandit, enough full exploration to approximate the loss + partial feedback in normal rounds.
+    \end{itemize}
+    
+    \textbf{Examples of Achieved Bounds:}
+    \[
+    \begin{cases}
+    9.22\text{-approx no-regret for single box selection,}\\
+    O(1)\text{-approx no-regret for $k$ boxes,}\\
+    O(\log k)\text{-approx no-regret for matroid constraints.}
+    \end{cases}
+    \]
+    \textbf{MSSC Special Case:} The 4-approx.\ from offline is matched in the online adversarial sense.
+    \end{frame}
+    
+    % Slide 8: Results for Non-Adaptive (NA) and Conclusion
+    \begin{frame}{Results for NA \& Conclusion}
+    \textbf{NA Setting:}
+    \begin{itemize}
+        \item Non-Lipschitz costs block direct use of FTRL.
+        \item Explore--exploit subroutine: solve a global LP + rounding.
+        \item Yields no-regret with constants e.g.\ 3.16 (1 box), 12.64 ($k$ boxes), $O(\log k)$ (matroids).
+    \end{itemize}
+    
+    \textbf{Conclusion:}
+    \begin{itemize}
+        \item Using scenario-aware partial adaptivity + robust rounding avoids scenario dependence.
+        \item OCO or explore--exploit methods yield constant-approx.\ no-regret for Pandora’s Box / MSSC.
+        \item The $\frac{e}{e-1}\alpha$ overhead from \cite{CGT+20} ensures polynomial-time solutions with near-optimal adaptivity.
+    \end{itemize}
 
 % Slide 5: Bandit Setting
 \begin{frame}{Bandit Setting}
