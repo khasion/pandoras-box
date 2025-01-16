@@ -1,0 +1,118 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[greek,english]{babel}
+\usepackage{cite}
+
+\title[Online Learning]{Online Learning for Min Sum Set Cover and Pandora's Box}
+\author{Evangelia Gergatsouli, Christos Tzamos \\ Presented by: Ioannis Kasionis, Petros Triantafyllos}
+\date{January 2025}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Slide 1: Introduction
+\begin{frame}{Introduction}
+\textbf{Context:} Stochastic optimization problems\\
+\textbf{Focus:} Online version of Min Sum Set Cover (MSSC) and Pandora's Box\\
+\textbf{Key Question:} How to minimize regret in online settings?
+\end{frame}
+
+% Slide 2: Problem Definitions
+\begin{frame}{Problem Definitions}
+\textbf{Pandora’s Box:}
+\begin{itemize}
+    \item Selection with unknown costs.
+    \item Goal: Minimize selection and exploration costs.
+\end{itemize}
+\textbf{MSSC:}
+\begin{itemize}
+    \item Minimize the weighted sum of covering times for scenarios.
+\end{itemize}
+\textbf{Online Challenges:}
+\begin{itemize}
+    \item Adversarially chosen scenarios.
+    \item Regret minimization.
+\end{itemize}
+\end{frame}
+
+% Slide 3: Methodology
+\begin{frame}{Methodology}
+\textbf{Framework: Online Convex Optimization (OCO)} \cite{shalev2007primal}\\
+Steps:
+\begin{enumerate}
+    \item Convex relaxation of problem instances \cite{flaxman2004online}.
+    \item Fractional solutions obtained via OCO.
+    \item Rounding fractional solutions to integral solutions \cite{bansal2010constant}.
+\end{enumerate}
+\end{frame}
+
+% Slide 4: Key Results
+\begin{frame}{Key Results}
+\begin{itemize}
+    \item \textbf{Single Box:} 9.22-approximation no-regret algorithm \cite{gergatsouli2022online}.
+    \item \textbf{Multiple Boxes:} $O(1)$-approximation no-regret algorithm \cite{gergatsouli2022online}.
+    \item \textbf{Matroid Constraints:} $O(\log k)$-approximation no-regret algorithm \cite{gergatsouli2022online}.
+    \item \textbf{Efficiency:} Computationally efficient Algorithms.
+\end{itemize}
+\end{frame}
+
+% Slide 5: Bandit Setting
+\begin{frame}{Bandit Setting}
+\textbf{Key Features:}
+\begin{itemize}
+    \item Limited feedback: Only revealed values for opened boxes.
+    \item Approximation guarantees similar to the full information setting.
+    \item Practical for real-world scenarios.
+\end{itemize}
+\end{frame}
+
+% Slide 6: Comparison with Previous Work
+\begin{frame}{Comparison with Previous Work}
+\textbf{Improvements over [CGT+20]:}
+\begin{itemize}
+    \item Simpler algorithms.
+    \item Broader applicability.
+\end{itemize}
+\textbf{Advances over [FLPS20]:}
+\begin{itemize}
+    \item Extends to bandit settings.
+    \item Handles more complex constraints.
+\end{itemize}
+\end{frame}
+
+% Slide 7: Applications and Open Questions
+\begin{frame}{Applications and Open Questions}
+\textbf{Applications:}
+\begin{itemize}
+    \item Resource allocation.
+    \item Decision-making under uncertainty.
+\end{itemize}
+\textbf{Open Problems:}
+\begin{itemize}
+    \item Tight bounds for MSSC.
+    \item Extensions to dynamic settings.
+\end{itemize}
+\end{frame}
+
+% Slide 8: Conclusion
+\begin{frame}{Conclusion}
+\textbf{Summary of Contributions:}
+\begin{itemize}
+    \item Framework for online learning with MSSC and Pandora’s Box \cite{gergatsouli2022online}.
+    \item Approximation guarantees for various settings.
+    \item Computationally Efficient Algorithms.
+\end{itemize}
+\textbf{Acknowledgments:}
+\begin{itemize}
+    \item Authors: Evangelia Gergatsouli, Christos Tzamos.
+\end{itemize}
+\end{frame}
+
+% Bibliography Slide
+\bibliographystyle{unsrt}
+\bibliography{report}
+\end{document}
